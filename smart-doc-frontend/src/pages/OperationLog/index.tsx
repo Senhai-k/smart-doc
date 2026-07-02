@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Table, Button, Space, Input, Tag, Popconfirm, message, Select, Modal, Row, Col
 } from 'antd';
@@ -35,7 +35,7 @@ const OperationLogPage = () => {
     system: { label: '系统', icon: '⚙️' }
   };
 
-  const loadLogs = async () => {
+  const loadLogs = useCallback(async () => {
     setLoading(true);
     try {
       const res = await logApi.getList({
@@ -51,8 +51,8 @@ const OperationLogPage = () => {
       // 同时加载今日统计
       const statsRes = await logApi.getTodayStats();
       setTodayStats(statsRes);
-    } catch (error) {
-      console.error('加载失败', error);
+    } catch (_error) {
+      console.error('加载失败', _error);
       // 如果后端API不可用，使用模拟数据作为后备
       setDataSource([]);
       setTotal(0);
@@ -60,11 +60,11 @@ const OperationLogPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, pageSize, moduleFilter, statusFilter, keyword]);
 
   useEffect(() => {
     loadLogs();
-  }, [page, pageSize, moduleFilter, statusFilter, keyword]);
+  }, [loadLogs]);
 
   const handleBatchDelete = async () => {
     try {
@@ -72,7 +72,7 @@ const OperationLogPage = () => {
       message.success(`已将 ${selectedRowKeys.length} 件移出日志`);
       setSelectedRowKeys([]);
       loadLogs();
-    } catch (error) {
+    } catch (_error) {
       message.error('移出失败');
     }
   };
@@ -86,7 +86,7 @@ const OperationLogPage = () => {
           await logApi.clearAll();
           message.success('已清空日志');
           loadLogs();
-        } catch (error) {
+        } catch (_error) {
           message.error('清空失败');
         }
       }
@@ -97,7 +97,7 @@ const OperationLogPage = () => {
     try {
       // TODO: 实现导出功能
       message.info('导出功能开发中');
-    } catch (error) {
+    } catch (_error) {
       message.error('导出失败');
     }
   };

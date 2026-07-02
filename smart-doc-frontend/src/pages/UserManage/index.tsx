@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Table, Button, Space, Input, Tag, Popconfirm, message, Modal, Form, Select, Avatar, Tooltip
 } from 'antd';
@@ -16,7 +16,7 @@ import {
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import { userApi, type User } from '@/api/user';
+import { type User } from '@/api/user';
 
 const { Option } = Select;
 
@@ -38,7 +38,7 @@ const UserManagePage = () => {
   const [resetUser, setResetUser] = useState<User | null>(null);
   const [newPassword, setNewPassword] = useState('');
 
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     setLoading(true);
     try {
       // 模拟数据（后端完成后替换）
@@ -50,20 +50,20 @@ const UserManagePage = () => {
       ];
       setDataSource(mockData);
       setTotal(mockData.length);
-    } catch (error) {
+    } catch (_error) {
       message.error('加载失败');
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadUsers();
-  }, [page, pageSize, keyword, roleFilter]);
+  }, [loadUsers, page, pageSize, keyword, roleFilter]);
 
   const handleSubmit = async () => {
     try {
-      const values = await form.validateFields();
+      await form.validateFields();
       if (editingUser) {
         message.success('更新成功');
       } else {
@@ -72,7 +72,7 @@ const UserManagePage = () => {
       setModalOpen(false);
       form.resetFields();
       loadUsers();
-    } catch (error) {
+    } catch (_error) {
       message.error('操作失败');
     }
   };
@@ -81,7 +81,7 @@ const UserManagePage = () => {
     try {
       message.success('已移出馆员名录');
       loadUsers();
-    } catch (error) {
+    } catch (_error) {
       message.error('移出失败');
     }
   };
@@ -95,7 +95,7 @@ const UserManagePage = () => {
       message.success(`已重置 "${resetUser?.username}" 的密钥`);
       setResetPwdOpen(false);
       setNewPassword('');
-    } catch (error) {
+    } catch (_error) {
       message.error('重置失败');
     }
   };

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Row, Col, Statistic, Spin, Table, Tag } from 'antd';
+import { Row, Col, Spin, Table, Tag } from 'antd';
 import ReactECharts from 'echarts-for-react';
 import { dashboardApi } from '@/api/dashboard';
 import type { DashboardStats } from '@/api/dashboard';
@@ -14,8 +14,8 @@ const Dashboard = () => {
       try {
         const res = await dashboardApi.getStats();
         setStats(res);
-      } catch (error) {
-        console.error('加载统计数据失败', error);
+      } catch (_error) {
+        console.error('加载统计数据失败', _error);
         // 如果后端API暂时不可用，使用模拟数据作为后备
         setStats({
           totalUsers: 128,

@@ -39,7 +39,7 @@ const TextAIPage = () => {
       const res = await llmApi.summary(inputText);
       setSummary(res.result);
       message.success('摘要完成');
-    } catch (error) {
+    } catch (_error) {
       message.error('摘要失败');
     } finally {
       setLoading(false);
@@ -53,7 +53,7 @@ const TextAIPage = () => {
       const res = await llmApi.sentiment(inputText);
       setSentiment(res.result);
       message.success('判词完成');
-    } catch (error) {
+    } catch (_error) {
       message.error('判词失败');
     } finally {
       setLoading(false);
@@ -67,7 +67,7 @@ const TextAIPage = () => {
       const res = await llmApi.keywords(inputText);
       setKeywords(res.result);
       message.success('索引完成');
-    } catch (error) {
+    } catch (_error) {
       message.error('索引失败');
     } finally {
       setLoading(false);
@@ -81,7 +81,7 @@ const TextAIPage = () => {
       const res = await llmApi.translate(inputText, targetLang);
       setTranslation(res.result);
       message.success('译稿完成');
-    } catch (error) {
+    } catch (_error) {
       message.error('译稿失败');
     } finally {
       setLoading(false);
@@ -157,7 +157,7 @@ const TextAIPage = () => {
               ].map(tab => (
                 <span
                   key={tab.key}
-                  onClick={() => setActiveTab(tab.key as any)}
+                  onClick={() => setActiveTab(tab.key as 'summary' | 'sentiment' | 'keywords' | 'translate')}
                   style={{
                     fontFamily: activeTab === tab.key ? 'Georgia' : 'monospace',
                     fontSize: 15,

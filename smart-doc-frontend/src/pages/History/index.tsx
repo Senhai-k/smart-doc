@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Table, Button, Space, Select, Popconfirm, message, Modal, Tag } from 'antd';
-import { DeleteOutlined, ClearOutlined, ReloadOutlined, EyeOutlined } from '@ant-design/icons';
+import { DeleteOutlined, ReloadOutlined, EyeOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { historyApi, type HistoryRecord } from '@/api/history';
@@ -25,7 +25,7 @@ const HistoryPage = () => {
     meeting_extract: '会议纪要'
   };
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const res = await historyApi.getList({
@@ -35,16 +35,16 @@ const HistoryPage = () => {
       });
       setDataSource(res.items);
       setTotal(res.total);
-    } catch (error) {
+    } catch (_error) {
       message.error('加载失败');
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, pageSize, typeFilter]);
 
   useEffect(() => {
     loadData();
-  }, [page, pageSize, typeFilter]);
+  }, [loadData]);
 
   const handleDelete = async (id: number) => {
     try {
@@ -52,7 +52,7 @@ const HistoryPage = () => {
       message.success('已移出档案馆');
       loadData();
       setSelectedRowKeys(prev => prev.filter(key => key !== id));
-    } catch (error) {
+    } catch (_error) {
       message.error('移出失败');
     }
   };
@@ -63,7 +63,7 @@ const HistoryPage = () => {
       message.success(`已将 ${selectedRowKeys.length} 件移出档案馆`);
       setSelectedRowKeys([]);
       loadData();
-    } catch (error) {
+    } catch (_error) {
       message.error('移出失败');
     }
   };
@@ -74,7 +74,7 @@ const HistoryPage = () => {
       message.success('已清空归档索引');
       loadData();
       setSelectedRowKeys([]);
-    } catch (error) {
+    } catch (_error) {
       message.error('清空失败');
     }
   };
@@ -242,7 +242,7 @@ const HistoryPage = () => {
                         {parsed.action_items && parsed.action_items.length > 0 && (
                           <div><strong>待办事项：</strong>
                             <ul>
-                              {parsed.action_items.map((item: any, idx: number) => (
+                              {parsed.action_items.map((item: { task: string; assignee?: string; deadline?: string }, idx: number) => (
                                 <li key={idx}>{item.task} {item.assignee && `（${item.assignee}）`} {item.deadline && `截止：${item.deadline}`}</li>
                               ))}
                             </ul>

@@ -1,5 +1,11 @@
 import request from './client';
 
+interface ExportResult {
+  filename: string;
+  structured?: Record<string, unknown>;
+  error?: string;
+}
+
 export const llmApi = {
   summary: (text: string) =>
     request.post('/llm/summary', { text }),  // 直接传对象
@@ -19,6 +25,6 @@ export const llmApi = {
       timeout: 120000
     }),
 
-  exportMeetingResults: (results: any[]) =>
+  exportMeetingResults: (results: ExportResult[]) =>
     request.post('/llm/export/meeting', { results }, { responseType: 'blob' }),
 };

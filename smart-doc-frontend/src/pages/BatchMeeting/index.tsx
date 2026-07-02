@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Upload, Button, Table, message, Spin, Card } from 'antd';
 import { InboxOutlined, DownloadOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
+import type { UploadProps, UploadFile } from 'antd';
 import { llmApi } from '@/api/llm';
 
 const { Dragger } = Upload;
@@ -21,7 +21,7 @@ interface ProcessResult {
 const BatchMeetingPage = () => {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<ProcessResult[]>([]);
-  const [fileList, setFileList] = useState<any[]>([]);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const uploadProps: UploadProps = {
     name: 'files',
@@ -52,8 +52,8 @@ const BatchMeetingPage = () => {
       const res = await llmApi.batchProcessMeeting(formData);
       setResults(res.results);
       message.success(`处理完成，共 ${res.total} 个文件`);
-    } catch (error) {
-      console.error(error);
+    } catch (_error) {
+      console.error(_error);
       message.error('处理失败');
     } finally {
       setLoading(false);
@@ -74,7 +74,7 @@ const BatchMeetingPage = () => {
       (r.structured?.attendees || []).join(';'),
       r.structured?.conclusion || '',
       (r.structured?.action_items || [])
-        .map((item: any) => `${item.task}（${item.assignee}）`)
+        .map(item => `${item.task}（${item.assignee}）`)
         .join(';')
     ]);
 
@@ -97,19 +97,19 @@ const BatchMeetingPage = () => {
       title: '会议主题', 
       key: 'topic', 
       width: 200,
-      render: (_: any, record: ProcessResult) => record.structured?.meeting_topic || '-'
+      render: (_: unknown, record: ProcessResult) => record.structured?.meeting_topic || '-'
     },
     { 
       title: '结论', 
       key: 'conclusion', 
       width: 250,
-      render: (_: any, record: ProcessResult) => record.structured?.conclusion || '-'
+      render: (_: unknown, record: ProcessResult) => record.structured?.conclusion || '-'
     },
     { 
       title: '待办事项', 
       key: 'tasks', 
       width: 200,
-      render: (_: any, record: ProcessResult) => (
+      render: (_: unknown, record: ProcessResult) => (
         <ul style={{ margin: 0, paddingLeft: 16 }}>
           {(record.structured?.action_items || []).map((item, idx) => (
             <li key={idx}>{item.task}（{item.assignee}）</li>
@@ -121,7 +121,7 @@ const BatchMeetingPage = () => {
       title: '状态', 
       key: 'status', 
       width: 80,
-      render: (_: any, record: ProcessResult) => (
+      render: (_: unknown, record: ProcessResult) => (
         record.error ? <span style={{ color: 'red' }}>失败</span> : <span style={{ color: 'green' }}>成功</span>
       )
     }

@@ -17,7 +17,8 @@ const LoginPage = () => {
       login(res.user, res.token);
       message.success('签核成功');
       navigate('/dashboard');
-    } catch (error: any) {
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
       message.error(error?.response?.data?.message || '馆员编号或密钥错误');
     } finally {
       setLoading(false);
@@ -29,57 +30,17 @@ const LoginPage = () => {
     try {
       await authApi.register(values);
       message.success('登记成功，请签核');
-    } catch (error: any) {
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
       message.error(error?.response?.data?.message || '登记失败');
     } finally {
       setLoading(false);
     }
   };
 
-  const LoginForm = () => {
-    const [form] = Form.useForm();
-    return (
-      <Form form={form} onFinish={handleLogin}>
-        <Form.Item name="username" rules={[{ required: true, message: '请输入馆员编号' }]}>
-          <Input prefix={<UserOutlined />} placeholder="馆员编号" size="large" />
-        </Form.Item>
-        <Form.Item name="password" rules={[{ required: true, message: '请输入密钥' }]}>
-          <Input.Password prefix={<LockOutlined />} placeholder="密钥" size="large" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading} block size="large">
-            签核登录
-          </Button>
-        </Form.Item>
-      </Form>
-    );
-  };
-
-  const RegisterForm = () => {
-    const [form] = Form.useForm();
-    return (
-      <Form form={form} onFinish={handleRegister}>
-        <Form.Item name="username" rules={[{ required: true, message: '请输入馆员编号' }]}>
-          <Input prefix={<UserOutlined />} placeholder="馆员编号" size="large" />
-        </Form.Item>
-        <Form.Item name="email" rules={[{ required: true, message: '请输入馆邮', type: 'email' }]}>
-          <Input prefix={<MailOutlined />} placeholder="馆邮地址" size="large" />
-        </Form.Item>
-        <Form.Item name="password" rules={[{ required: true, message: '请设定密钥', min: 6 }]}>
-          <Input.Password prefix={<LockOutlined />} placeholder="密钥（至少6位）" size="large" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading} block size="large">
-            登记入馆
-          </Button>
-        </Form.Item>
-      </Form>
-    );
-  };
-
   const items = [
-    { key: 'login', label: '签核入馆', children: <LoginForm /> },
-    { key: 'register', label: '新馆登记', children: <RegisterForm /> },
+    { key: 'login', label: '签核入馆', children: <LoginFormInner handleLogin={handleLogin} loading={loading} /> },
+    { key: 'register', label: '新馆登记', children: <RegisterFormInner handleRegister={handleRegister} loading={loading} /> },
   ];
 
   return (
@@ -100,6 +61,47 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const LoginFormInner = ({ handleLogin, loading }: { handleLogin: (values: { username: string; password: string }) => void; loading: boolean }) => {
+  const [form] = Form.useForm();
+  return (
+    <Form form={form} onFinish={handleLogin}>
+      <Form.Item name="username" rules={[{ required: true, message: '请输入馆员编号' }]}>
+        <Input prefix={<UserOutlined />} placeholder="馆员编号" size="large" />
+      </Form.Item>
+      <Form.Item name="password" rules={[{ required: true, message: '请输入密钥' }]}>
+        <Input.Password prefix={<LockOutlined />} placeholder="密钥" size="large" />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit" loading={loading} block size="large">
+          签核登录
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+};
+
+const RegisterFormInner = ({ handleRegister, loading }: { handleRegister: (values: { username: string; password: string; email: string }) => void; loading: boolean }) => {
+  const [form] = Form.useForm();
+  return (
+    <Form form={form} onFinish={handleRegister}>
+      <Form.Item name="username" rules={[{ required: true, message: '请输入馆员编号' }]}>
+        <Input prefix={<UserOutlined />} placeholder="馆员编号" size="large" />
+      </Form.Item>
+      <Form.Item name="email" rules={[{ required: true, message: '请输入馆邮', type: 'email' }]}>
+        <Input prefix={<MailOutlined />} placeholder="馆邮地址" size="large" />
+      </Form.Item>
+      <Form.Item name="password" rules={[{ required: true, message: '请设定密钥', min: 6 }]}>
+        <Input.Password prefix={<LockOutlined />} placeholder="密钥（至少6位）" size="large" />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit" loading={loading} block size="large">
+          登记入馆
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 
