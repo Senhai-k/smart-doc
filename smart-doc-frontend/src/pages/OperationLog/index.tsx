@@ -63,8 +63,8 @@ const OperationLogPage = () => {
   };
 
   useEffect(() => {
-    loadLogs();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const timer = setTimeout(() => loadLogs(), 0);
+    return () => clearTimeout(timer);
   }, [page, pageSize, moduleFilter, statusFilter, keyword]);
 
   const handleBatchDelete = async () => {

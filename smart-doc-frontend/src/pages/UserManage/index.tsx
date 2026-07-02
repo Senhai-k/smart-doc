@@ -20,10 +20,18 @@ import { type User } from '@/api/user';
 
 const { Option } = Select;
 
+// 模拟数据（后端完成后替换）
+const mockUsers: User[] = [
+  { id: 1, username: 'admin', email: 'admin@example.com', role: 'admin', status: 'active', createdAt: '2024-01-01 10:00:00', lastLoginAt: '2024-05-26 09:00:00' },
+  { id: 2, username: '张馆员', email: 'zhang@example.com', role: 'user', status: 'active', createdAt: '2024-02-15 14:30:00', lastLoginAt: '2024-05-25 16:20:00' },
+  { id: 3, username: '李馆员', email: 'li@example.com', role: 'user', status: 'active', createdAt: '2024-03-10 09:15:00', lastLoginAt: '2024-05-24 11:45:00' },
+  { id: 4, username: '王馆员', email: 'wang@example.com', role: 'user', status: 'disabled', createdAt: '2024-04-05 16:00:00', lastLoginAt: '2024-05-20 14:00:00' },
+];
+
 const UserManagePage = () => {
   const [loading, setLoading] = useState(false);
-  const [dataSource, setDataSource] = useState<User[]>([]);
-  const [total, setTotal] = useState(0);
+  const [dataSource, setDataSource] = useState<User[]>(mockUsers);
+  const [total, setTotal] = useState(mockUsers.length);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
@@ -38,28 +46,9 @@ const UserManagePage = () => {
   const [newPassword, setNewPassword] = useState('');
 
   const loadUsers = async () => {
-    setLoading(true);
-    try {
-      // 模拟数据（后端完成后替换）
-      const mockData: User[] = [
-        { id: 1, username: 'admin', email: 'admin@example.com', role: 'admin', status: 'active', createdAt: '2024-01-01 10:00:00', lastLoginAt: '2024-05-26 09:00:00' },
-        { id: 2, username: '张馆员', email: 'zhang@example.com', role: 'user', status: 'active', createdAt: '2024-02-15 14:30:00', lastLoginAt: '2024-05-25 16:20:00' },
-        { id: 3, username: '李馆员', email: 'li@example.com', role: 'user', status: 'active', createdAt: '2024-03-10 09:15:00', lastLoginAt: '2024-05-24 11:45:00' },
-        { id: 4, username: '王馆员', email: 'wang@example.com', role: 'user', status: 'disabled', createdAt: '2024-04-05 16:00:00', lastLoginAt: '2024-05-20 14:00:00' },
-      ];
-      setDataSource(mockData);
-      setTotal(mockData.length);
-    } catch {
-      message.error('加载失败');
-    } finally {
-      setLoading(false);
-    }
+    setDataSource(mockUsers);
+    setTotal(mockUsers.length);
   };
-
-  useEffect(() => {
-    loadUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleSubmit = async () => {
     try {
