@@ -72,7 +72,7 @@ const OperationLogPage = () => {
       message.success(`已将 ${selectedRowKeys.length} 件移出日志`);
       setSelectedRowKeys([]);
       loadLogs();
-    } catch (_error) {
+    } catch {
       message.error('移出失败');
     }
   };
@@ -86,7 +86,7 @@ const OperationLogPage = () => {
           await logApi.clearAll();
           message.success('已清空日志');
           loadLogs();
-        } catch (_error) {
+        } catch {
           message.error('清空失败');
         }
       }
@@ -97,7 +97,7 @@ const OperationLogPage = () => {
     try {
       // TODO: 实现导出功能
       message.info('导出功能开发中');
-    } catch (_error) {
+    } catch {
       message.error('导出失败');
     }
   };

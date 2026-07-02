@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Upload, Button, Spin, message, Image, Row, Col } from 'antd';
-import { InboxOutlined, CopyOutlined, DeleteOutlined, DownloadOutlined } from '@ant-design/icons';
+import { CopyOutlined, DeleteOutlined, DownloadOutlined } from '@ant-design/icons';
 import type { UploadProps, UploadFile } from 'antd';
 import { ocrApi } from '@/api/ocr';
 

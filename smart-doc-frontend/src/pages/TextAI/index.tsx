@@ -39,7 +39,7 @@ const TextAIPage = () => {
       const res = await llmApi.summary(inputText);
       setSummary(res.result);
       message.success('摘要完成');
-    } catch (_error) {
+    } catch {
       message.error('摘要失败');
     } finally {
       setLoading(false);
@@ -53,7 +53,7 @@ const TextAIPage = () => {
       const res = await llmApi.sentiment(inputText);
       setSentiment(res.result);
       message.success('判词完成');
-    } catch (_error) {
+    } catch {
       message.error('判词失败');
     } finally {
       setLoading(false);
@@ -67,7 +67,7 @@ const TextAIPage = () => {
       const res = await llmApi.keywords(inputText);
       setKeywords(res.result);
       message.success('索引完成');
-    } catch (_error) {
+    } catch {
       message.error('索引失败');
     } finally {
       setLoading(false);
@@ -81,7 +81,7 @@ const TextAIPage = () => {
       const res = await llmApi.translate(inputText, targetLang);
       setTranslation(res.result);
       message.success('译稿完成');
-    } catch (_error) {
+    } catch {
       message.error('译稿失败');
     } finally {
       setLoading(false);

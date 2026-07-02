@@ -35,7 +35,7 @@ const HistoryPage = () => {
       });
       setDataSource(res.items);
       setTotal(res.total);
-    } catch (_error) {
+    } catch {
       message.error('加载失败');
     } finally {
       setLoading(false);
@@ -52,7 +52,7 @@ const HistoryPage = () => {
       message.success('已移出档案馆');
       loadData();
       setSelectedRowKeys(prev => prev.filter(key => key !== id));
-    } catch (_error) {
+    } catch {
       message.error('移出失败');
     }
   };
@@ -63,7 +63,7 @@ const HistoryPage = () => {
       message.success(`已将 ${selectedRowKeys.length} 件移出档案馆`);
       setSelectedRowKeys([]);
       loadData();
-    } catch (_error) {
+    } catch {
       message.error('移出失败');
     }
   };
@@ -74,7 +74,7 @@ const HistoryPage = () => {
       message.success('已清空归档索引');
       loadData();
       setSelectedRowKeys([]);
-    } catch (_error) {
+    } catch {
       message.error('清空失败');
     }
   };

@@ -50,7 +50,7 @@ const UserManagePage = () => {
       ];
       setDataSource(mockData);
       setTotal(mockData.length);
-    } catch (_error) {
+    } catch {
       message.error('加载失败');
     } finally {
       setLoading(false);
@@ -72,7 +72,7 @@ const UserManagePage = () => {
       setModalOpen(false);
       form.resetFields();
       loadUsers();
-    } catch (_error) {
+    } catch {
       message.error('操作失败');
     }
   };
@@ -81,7 +81,7 @@ const UserManagePage = () => {
     try {
       message.success('已移出馆员名录');
       loadUsers();
-    } catch (_error) {
+    } catch {
       message.error('移出失败');
     }
   };
@@ -95,7 +95,7 @@ const UserManagePage = () => {
       message.success(`已重置 "${resetUser?.username}" 的密钥`);
       setResetPwdOpen(false);
       setNewPassword('');
-    } catch (_error) {
+    } catch {
       message.error('重置失败');
     }
   };
