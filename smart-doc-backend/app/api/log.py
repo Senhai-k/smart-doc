@@ -13,7 +13,7 @@ log_bp = Blueprint('log', __name__)
 def get_logs():
     """获取操作日志列表（仅管理员）"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User,current_user_id)
     
     if current_user.role != 'admin':
         return {'success': False, 'message': '权限不足'}, 403
@@ -53,7 +53,7 @@ def get_logs():
 def get_module_stats():
     """获取模块统计"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User,current_user_id)
     
     if current_user.role != 'admin':
         return {'success': False, 'message': '权限不足'}, 403
@@ -72,7 +72,7 @@ def get_module_stats():
 def get_today_stats():
     """获取今日统计"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User,current_user_id)
     
     if current_user.role != 'admin':
         return {'success': False, 'message': '权限不足'}, 403
@@ -98,7 +98,7 @@ def get_today_stats():
 def batch_delete():
     """批量删除日志"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User,current_user_id)
     
     if current_user.role != 'admin':
         return {'success': False, 'message': '权限不足'}, 403
@@ -120,7 +120,7 @@ def batch_delete():
 def clear_all():
     """清空所有日志"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User,current_user_id)
     
     if current_user.role != 'admin':
         return {'success': False, 'message': '权限不足'}, 403

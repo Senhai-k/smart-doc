@@ -25,7 +25,7 @@ client = OpenAI(
 def summary():
     start_time = time.time()
     user_id = int(get_jwt_identity())
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     
     data = request.get_json()
     if not data:
@@ -66,7 +66,7 @@ def summary():
 @jwt_required()
 def sentiment():
     user_id = int(get_jwt_identity())
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     
     data = request.get_json()
     if not data:
@@ -105,7 +105,7 @@ def sentiment():
 @jwt_required()
 def keywords():
     user_id = int(get_jwt_identity())
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     
     data = request.get_json()
     if not data:
@@ -144,7 +144,7 @@ def keywords():
 @jwt_required()
 def translate():
     user_id = int(get_jwt_identity())
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     
     data = request.get_json()
     if not data:
@@ -188,7 +188,7 @@ def translate():
 def batch_process_meetings():
     """批量处理会议纪要文件"""
     user_id = int(get_jwt_identity())
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     
     if 'files' not in request.files:
         return {'success': False, 'message': '请上传文件'}, 400

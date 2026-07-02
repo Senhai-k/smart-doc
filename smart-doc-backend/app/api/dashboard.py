@@ -1,5 +1,5 @@
 """仪表盘统计 API"""
-from flask import Blueprint
+from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime, timedelta
 from sqlalchemy import func
@@ -14,13 +14,13 @@ dashboard_bp = Blueprint('dashboard', __name__)
 def get_stats():
     """获取仪表盘统计数据"""
     user_id = int(get_jwt_identity())
-    current_user = User.query.get(user_id)
+    current_user = db.session.get(User, user_id)
     
-    # 总用户数（仅管理员可见全部）
+    # 总用户数
     if current_user.role == 'admin':
         total_users = User.query.count()
     else:
-        total_users = User.query.count()  # 普通用户也显示总数
+        total_users = User.query.count()
     
     # 总操作次数
     total_operations = History.query.count()
@@ -32,7 +32,7 @@ def get_stats():
     
     # 各功能使用次数
     usage_by_type = {}
-    types = ['ocr', 'summary', 'sentiment', 'keywords', 'translate']
+    types = ['ocr', 'summary', 'sentiment', 'keywords', 'translate', 'meeting_extract']
     for t in types:
         count = History.query.filter_by(type=t).count()
         if count > 0:
@@ -53,12 +53,31 @@ def get_stats():
             'count': count
         })
     
+    # 最近活动（从操作日志获取）
+    recent_logs = OperationLog.query.order_by(OperationLog.created_at.desc()).limit(5).all()
+    recent_activities = [
+        {
+            'id': log.id,
+            'username': log.username,
+            'action': log.action,
+            'time': log.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        }
+        for log in recent_logs
+    ]
+    
+    # 如果没有操作日志，显示提示
+    if not recent_activities:
+        recent_activities = [
+            {'id': 0, 'username': '系统', 'action': '暂无馆务记录', 'time': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+        ]
+    
     return {
         'totalUsers': total_users,
         'totalOperations': total_operations,
         'todayOperations': today_operations,
         'usageByType': usage_by_type,
-        'dailyTrend': daily_trend
+        'dailyTrend': daily_trend,
+        'recentActivities': recent_activities
     }
 
 
@@ -101,7 +120,8 @@ def get_distribution():
         'summary': '智能总结',
         'sentiment': '情感分析',
         'keywords': '关键词提取',
-        'translate': '文本翻译'
+        'translate': '文本翻译',
+        'meeting_extract': '会议纪要'
     }
     
     for r in results:

@@ -86,7 +86,7 @@ const LoginPage = () => {
     <div className="archive-login">
       <div className="archive-login-container">
         <div className="archive-login-header">
-          <div className="archive-stamp">智档馆 · 乙巳年制</div>
+          <div className="archive-stamp">智档馆 · 丙午年制</div>
           <h1>智能文档分析平台</h1>
           <p className="archive-subtitle">Intelligent Document Archive</p>
           <div className="archive-divider"></div>

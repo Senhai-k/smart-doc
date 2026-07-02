@@ -119,7 +119,36 @@ npm install
 npm run dev
 ```
 
-### 4. 访问系统
+### 4. Docker 部署（可选）
+
+项目支持 Docker 一键部署，无需手动配置环境：
+
+```bash
+# 确保已安装 Docker 和 Docker Compose
+# 在项目根目录执行
+docker-compose up -d
+
+# 查看运行状态
+docker-compose ps
+
+# 查看日志
+docker-compose logs -f
+```
+
+> 启动后前端访问 `http://localhost:80`，后端 API 地址为 `http://localhost:5000`
+
+### 5. 运行测试
+
+```bash
+cd smart-doc-backend
+# 激活虚拟环境后执行
+python -m pytest -v
+
+# 查看测试覆盖率
+python -m pytest --cov=app -v
+```
+
+### 6. 访问系统
 
 打开浏览器访问 `http://localhost:5173`
 

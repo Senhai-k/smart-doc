@@ -8,7 +8,13 @@ venv/
 __pycache__/
 *.pyc
 .env
+.env.example
 uploads/
+test_uploads/
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
 
 # 系统文件
 .DS_Store

@@ -37,7 +37,7 @@ const Sidebar = () => {
     <div className="archive-sidebar">
       <div className="archive-sidebar-header">
         <div className="archive-sidebar-title">智档馆</div>
-        <div className="archive-sidebar-subtitle">乙巳年制</div>
+        <div className="archive-sidebar-subtitle">丙午年制</div>
       </div>
       <Menu
         mode="inline"

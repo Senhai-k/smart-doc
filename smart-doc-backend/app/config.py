@@ -32,3 +32,13 @@ class Config:
     CORS_ORIGINS = os.getenv('CORS_ORIGINS', 'http://localhost:5173').split(',')
     
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
+class TestConfig(Config):
+    """测试环境配置 - 使用 SQLite 内存数据库"""
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    JWT_SECRET_KEY = 'test-jwt-secret-32-bytes-long-for-sha256!'
+    DEEPSEEK_API_KEY = 'test-key'
+    UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'test_uploads')
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)

@@ -14,7 +14,7 @@ user_bp = Blueprint('user', __name__)
 def get_users():
     """获取用户列表"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User, current_user_id)
     
     # 只有管理员可以查看所有用户
     if current_user.role != 'admin':
@@ -51,7 +51,7 @@ def get_users():
 def create_user():
     """创建用户"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User, current_user_id)
     
     if current_user.role != 'admin':
         return {'success': False, 'message': '权限不足'}, 403
@@ -87,12 +87,12 @@ def create_user():
 def update_user(user_id):
     """更新用户信息"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User, current_user_id)
     
     if current_user.role != 'admin' and current_user.id != user_id:
         return {'success': False, 'message': '权限不足'}, 403
     
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return {'success': False, 'message': '用户不存在'}, 404
     
@@ -126,7 +126,7 @@ def update_user(user_id):
 def delete_user(user_id):
     """删除用户"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User, current_user_id)
     
     if current_user.role != 'admin':
         return {'success': False, 'message': '权限不足'}, 403
@@ -134,7 +134,7 @@ def delete_user(user_id):
     if current_user.id == user_id:
         return {'success': False, 'message': '不能删除自己'}, 400
     
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return {'success': False, 'message': '用户不存在'}, 404
     
@@ -149,12 +149,12 @@ def delete_user(user_id):
 def reset_password(user_id):
     """重置密码"""
     current_user_id = int(get_jwt_identity())
-    current_user = User.query.get(current_user_id)
+    current_user = db.session.get(User, current_user_id)
     
     if current_user.role != 'admin':
         return {'success': False, 'message': '权限不足'}, 403
     
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return {'success': False, 'message': '用户不存在'}, 404
     

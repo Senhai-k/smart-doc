@@ -29,7 +29,7 @@ def recognize():
     """图片文字识别"""
     start_time = time.time()
     user_id = int(get_jwt_identity())
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     
     # 检查文件
     if 'image' not in request.files:
