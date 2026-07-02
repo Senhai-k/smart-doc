@@ -27,7 +27,6 @@ const UserManagePage = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
-  const [roleFilter, setRoleFilter] = useState<string>('');
   
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('新增馆员');

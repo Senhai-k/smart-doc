@@ -44,6 +44,7 @@ const HistoryPage = () => {
 
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pageSize, typeFilter]);
 
   const handleDelete = async (id: number) => {
