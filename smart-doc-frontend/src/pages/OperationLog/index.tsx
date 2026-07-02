@@ -64,6 +64,7 @@ const OperationLogPage = () => {
 
   useEffect(() => {
     loadLogs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, pageSize, moduleFilter, statusFilter, keyword]);
 
   const handleBatchDelete = async () => {
