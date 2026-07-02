@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Table, Button, Space, Input, Tag, Popconfirm, message, Select, Modal, Row, Col
 } from 'antd';
@@ -35,7 +35,7 @@ const OperationLogPage = () => {
     system: { label: '系统', icon: '⚙️' }
   };
 
-  const loadLogs = useCallback(async () => {
+  const loadLogs = async () => {
     setLoading(true);
     try {
       const res = await logApi.getList({
@@ -60,11 +60,11 @@ const OperationLogPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, pageSize, moduleFilter, statusFilter, keyword]);
+  };
 
   useEffect(() => {
     loadLogs();
-  }, [loadLogs]);
+  }, [page, pageSize, moduleFilter, statusFilter, keyword]);
 
   const handleBatchDelete = async () => {
     try {

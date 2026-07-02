@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Table, Button, Space, Select, Popconfirm, message, Modal, Tag } from 'antd';
 import { DeleteOutlined, ReloadOutlined, EyeOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
@@ -25,7 +25,7 @@ const HistoryPage = () => {
     meeting_extract: '会议纪要'
   };
 
-  const loadData = useCallback(async () => {
+  const loadData = async () => {
     setLoading(true);
     try {
       const res = await historyApi.getList({
@@ -40,11 +40,11 @@ const HistoryPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, pageSize, typeFilter]);
+  };
 
   useEffect(() => {
     loadData();
-  }, [loadData]);
+  }, [page, pageSize, typeFilter]);
 
   const handleDelete = async (id: number) => {
     try {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Table, Button, Space, Input, Tag, Popconfirm, message, Modal, Form, Select, Avatar, Tooltip
 } from 'antd';
@@ -38,7 +38,7 @@ const UserManagePage = () => {
   const [resetUser, setResetUser] = useState<User | null>(null);
   const [newPassword, setNewPassword] = useState('');
 
-  const loadUsers = useCallback(async () => {
+  const loadUsers = async () => {
     setLoading(true);
     try {
       // 模拟数据（后端完成后替换）
@@ -55,11 +55,11 @@ const UserManagePage = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
     loadUsers();
-  }, [loadUsers, page, pageSize, keyword, roleFilter]);
+  }, []);
 
   const handleSubmit = async () => {
     try {
@@ -77,7 +77,7 @@ const UserManagePage = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async () => {
     try {
       message.success('已移出馆员名录');
       loadUsers();
