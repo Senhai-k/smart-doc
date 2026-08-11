@@ -50,7 +50,7 @@ const OCRPage = () => {
         onSuccess?.(res);
       } catch (error) {
         message.error('誊录失败，请重试');
-        onError?.(error);
+        onError?.(error instanceof Error ? error : new Error('OCR request failed'));
       } finally {
         setLoading(false);
       }

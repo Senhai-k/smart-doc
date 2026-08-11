@@ -1,7 +1,15 @@
 // src/api/client.ts
 
 import axios from 'axios';
+import type { AxiosRequestConfig } from 'axios';
 import { message } from 'antd';
+
+interface ApiClient {
+  get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T>;
+  post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
+  put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
+  delete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T>;
+}
 
 const request = axios.create({
   baseURL: 'http://localhost:5000/api',
@@ -40,4 +48,4 @@ request.interceptors.response.use(
   }
 );
 
-export default request;
+export default request as ApiClient;

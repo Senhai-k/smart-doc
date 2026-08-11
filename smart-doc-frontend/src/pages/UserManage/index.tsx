@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Table, Button, Space, Input, Tag, Popconfirm, message, Modal, Form, Select, Avatar, Tooltip
 } from 'antd';
@@ -29,12 +29,12 @@ const mockUsers: User[] = [
 ];
 
 const UserManagePage = () => {
-  const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<User[]>(mockUsers);
   const [total, setTotal] = useState(mockUsers.length);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [keyword, setKeyword] = useState('');
+  const [roleFilter, setRoleFilter] = useState<User['role']>();
   
   const [modalOpen, setModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState('新增馆员');
@@ -74,6 +74,13 @@ const UserManagePage = () => {
       message.error('移出失败');
     }
   };
+
+  const filteredUsers = dataSource.filter((user) => {
+    const matchesKeyword = !keyword
+      || user.username.toLowerCase().includes(keyword.toLowerCase())
+      || user.email.toLowerCase().includes(keyword.toLowerCase());
+    return matchesKeyword && (!roleFilter || user.role === roleFilter);
+  });
 
   const handleResetPassword = async () => {
     if (!newPassword || newPassword.length < 6) {
@@ -161,7 +168,7 @@ const UserManagePage = () => {
             }} style={{ color: 'var(--wood)' }} />
           </Tooltip>
           <Tooltip title="移出">
-            <Popconfirm title="确认移出" description={`将 "${record.username}" 移出馆员名录？`} onConfirm={() => handleDelete(record.id)}>
+            <Popconfirm title="确认移出" description={`将 "${record.username}" 移出馆员名录？`} onConfirm={handleDelete}>
               <Button type="link" size="small" danger icon={<DeleteOutlined />} />
             </Popconfirm>
           </Tooltip>
@@ -197,7 +204,7 @@ const UserManagePage = () => {
               placeholder="按职级"
               allowClear
               style={{ width: 110, borderRadius: 0 }}
-              onChange={setRoleFilter}
+              onChange={(value: User['role'] | undefined) => setRoleFilter(value)}
               options={[
                 { value: 'admin', label: '馆长' },
                 { value: 'user', label: '馆员' },
@@ -218,9 +225,8 @@ const UserManagePage = () => {
 
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={filteredUsers}
           rowKey="id"
-          loading={loading}
           pagination={{
             current: page,
             pageSize,
