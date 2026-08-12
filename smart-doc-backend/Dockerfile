@@ -19,5 +19,5 @@ COPY . .
 # 暴露端口
 EXPOSE 5000
 
-# 启动命令
-CMD ["python", "run.py"]
+# Production WSGI server. Use python run.py only for local development.
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--timeout", "120", "run:app"]
