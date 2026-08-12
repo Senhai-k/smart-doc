@@ -1,210 +1,105 @@
-# 📜 智档馆 - 智能文档分析平台
+# 智档馆：智能文档分析平台
 
-> 一个以档案馆为隐喻、集成 OCR 与大模型的智能文档工作台
+[![CI](https://github.com/Senhai-k/smart-doc/actions/workflows/ci.yml/badge.svg)](https://github.com/Senhai-k/smart-doc/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/Senhai-k/smart-doc/actions/workflows/codeql.yml/badge.svg)](https://github.com/Senhai-k/smart-doc/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.10+-green.svg)](https://www.python.org/)
-[![React](https://img.shields.io/badge/React-18.3-blue.svg)](https://reactjs.org/)
-[![Flask](https://img.shields.io/badge/Flask-2.3-green.svg)](https://flask.palletsprojects.com/)
+智档馆是一个面向文档处理流程的课程项目，提供 OCR、文本摘要、情感分析、关键词提取、翻译、批量会议文档处理、历史记录及用户管理功能。
 
-## 📖 项目简介
+## 技术栈
 
-**智档馆**是一个面向文档工作流的智能处理平台，将 AI 能力封装为具体的档案事务（誊录、摘要、判词、索引、译作），帮助企业或个人从非结构化的文档中高效提取、整理和再利用信息。
+- 前端：React 19、TypeScript 6、Ant Design 6、Vite 8、ECharts、Zustand
+- 后端：Python 3.11、Flask 2.3、SQLAlchemy、JWT
+- 数据与 AI：MySQL 8、PaddleOCR、DeepSeek API
+- 工程化：Docker Compose、GitHub Actions、CodeQL、Dependabot
 
-### 核心特性
+## 功能
 
-- 📄 **多格式原生支持**：直接上传 PDF、Word、PPT、TXT、图片，无需预转换
-- 🤖 **双深度模型**：PaddleOCR（文字识别）+ DeepSeek 大模型（文本理解）
-- 📊 **批量处理**：一次处理多个文件，自动提取结构化信息，一键导出 Excel/CSV
-- 🔐 **完整权限体系**：馆员/馆长分级，JWT 认证，操作日志审计
-- 🎨 **档案室风格 UI**：纸质暖色调，沉浸式档案工作体验
+- OCR 图片文字识别
+- 摘要、情感分析、关键词和翻译
+- PDF、Word、PPT、TXT 批量会议文档处理
+- 使用趋势、历史记录和操作日志
+- JWT 登录、用户和角色管理
 
-### 功能模块（14个）
+## 快速开始
 
-| 类别 | 功能 | 说明 |
-|------|------|------|
-| 档案工作 | 案卷总览 | 数据仪表盘，统计使用趋势 |
-| | 影像誊录 | OCR 图片文字识别 |
-| | 批量案卷 | 多格式文档批量处理 |
-| 智识工坊 | 摘要案卷 | AI 智能文本总结 |
-| | 判词倾向 | 情感分析 |
-| | 索引标签 | 关键词提取 |
-| | 译作副本 | 多语言翻译 |
-| 馆务管理 | 归档索引 | 历史记录查询 |
-| | 馆员名录 | 用户管理 |
-| | 值班日志 | 操作审计 |
+### Docker Compose
 
----
-
-## 🛠️ 技术栈
-
-### 前端
-- React 18 + TypeScript
-- Ant Design 5.x（档案室定制主题）
-- Zustand（状态管理）
-- ECharts（数据可视化）
-- Vite（构建工具）
-
-### 后端
-- Flask 2.3（Python Web 框架）
-- MySQL 8.0 + SQLAlchemy
-- JWT（身份认证）
-- PaddleOCR（文字识别）
-- DeepSeek API（大语言模型）
-
----
-
-## 📦 环境要求
-
-| 软件 | 版本 |
-|------|------|
-| Python | 3.10+ |
-| Node.js | 18+ |
-| MySQL | 8.0 |
-
----
-
-## 🚀 快速开始
-
-### 1. 克隆项目
+需要 Docker Desktop 或兼容的 Docker Compose 环境。
 
 ```bash
 git clone https://github.com/Senhai-k/smart-doc.git
 cd smart-doc
+cp .env.example .env
+docker compose up --build -d
 ```
 
-### 2. 后端部署
+启动后访问：
+
+- Web：<http://localhost>
+- 健康检查：<http://localhost:5000/api/health>
+
+在 `.env` 中配置 `DEEPSEEK_API_KEY` 才能调用大模型功能。部署到公网前必须替换 `JWT_SECRET_KEY` 与 `SECRET_KEY`。
+
+### 本地开发
+
+后端：
 
 ```bash
-# 进入后端目录
 cd smart-doc-backend
-
-# 创建虚拟环境
 python -m venv venv
-# Windows:
-venv\Scripts\activate
-# Mac/Linux:
-source venv/bin/activate
-
-# 安装依赖
-pip install -r requirements.txt
-
-# 配置环境变量（创建 .env 文件）
-# 复制以下内容，填入你的配置
-SECRET_KEY=your-secret-key
-JWT_SECRET_KEY=your-jwt-secret
-MYSQL_HOST=localhost
-MYSQL_USER=root
-MYSQL_PASSWORD=your_password
-MYSQL_DATABASE=smart_doc
-DEEPSEEK_API_KEY=your-deepseek-api-key
-
-# 初始化数据库
-mysql -u root -p < ../smart-doc-database/smart-doc-database.sql
-
-# 启动后端
+# Windows PowerShell: venv\Scripts\Activate.ps1
+# macOS/Linux: source venv/bin/activate
+python -m pip install -r requirements.txt
 python run.py
 ```
 
-### 3. 前端部署
+前端：
 
 ```bash
-# 新开终端，进入前端目录
 cd smart-doc-frontend
-
-# 安装依赖
 npm install
-
-# 启动开发服务器
+# 独立开发时，在 .env 中设置 VITE_API_BASE_URL=http://localhost:5000/api
 npm run dev
 ```
 
-### 4. Docker 部署（可选）
-
-项目支持 Docker 一键部署，无需手动配置环境：
-
-```bash
-# 确保已安装 Docker 和 Docker Compose
-# 在项目根目录执行
-docker-compose up -d
-
-# 查看运行状态
-docker-compose ps
-
-# 查看日志
-docker-compose logs -f
-```
-
-> 启动后前端访问 `http://localhost:80`，后端 API 地址为 `http://localhost:5000`
-
-### 5. 运行测试
+## 测试与构建
 
 ```bash
 cd smart-doc-backend
-# 激活虚拟环境后执行
+python -m pip install -r requirements-test.txt
+python -m pip install pytest pytest-cov pytest-flask
 python -m pytest -v
-
-# 查看测试覆盖率
-python -m pytest --cov=app -v
 ```
 
-### 6. 访问系统
-
-打开浏览器访问 `http://localhost:5173`
-
-默认测试账号：
-
-| 账号 | 密码 | 角色 |
-|------|------|------|
-| admin | admin123 | 管理员 |
-| test | test123 | 普通用户 |
-
----
-
-## 📁 项目结构
-
+```bash
+cd smart-doc-frontend
+npm run lint
+npm run build
 ```
+
+GitHub Actions 会在向 `main` 提交或创建 Pull Request 时运行相同检查。
+
+## 演示账号
+
+数据库初始化脚本包含仅供本地演示的账号：`admin/admin123` 与 `test/test123`。这些不是生产凭据。部署到共享或公网环境前，应删除或修改这些账号并替换所有默认密钥。
+
+## 项目结构
+
+```text
 smart-doc/
-├── smart-doc-backend/          # 后端项目
-│   ├── app/
-│   │   ├── api/                # API 接口
-│   │   ├── services/           # 业务服务
-│   │   ├── models.py           # 数据库模型
-│   │   └── config.py           # 配置文件
-│   ├── migrations/             # 数据库迁移
-│   ├── requirements.txt        # Python 依赖
-│   └── run.py                  # 启动入口
-│
-├── smart-doc-frontend/         # 前端项目
-│   ├── src/
-│   │   ├── api/                # API 调用封装
-│   │   ├── components/         # 公共组件
-│   │   ├── pages/              # 页面组件
-│   │   ├── stores/             # 状态管理
-│   │   └── styles/             # 全局样式
-│   ├── package.json
-│   └── vite.config.ts
-│
-└── smart-doc-database/         # 数据库脚本
-    └── smart-doc-database.sql
+|-- .github/                 # CI、安全扫描和协作模板
+|-- smart-doc-backend/       # Flask API、服务与测试
+|-- smart-doc-frontend/      # React 前端
+|-- smart-doc-database/      # MySQL 初始化脚本
+|-- docker-compose.yml
+`-- README.md
 ```
 
----
+## 协作与安全
 
-## 🤝 贡献
+- 贡献说明：[CONTRIBUTING.md](CONTRIBUTING.md)
+- 安全报告：[SECURITY.md](SECURITY.md)
+- 开源许可：[MIT License](LICENSE)
 
-欢迎提交 Issue 和 Pull Request！
-
----
-
-## 📄 许可证
-
-MIT License
-
----
-
-## 📧 联系方式
-
-项目作者：Senhai-k
-
-项目链接：https://github.com/Senhai-k/smart-doc
+请勿提交 `.env`、API Key、访问令牌、数据库密码、上传文件或真实用户数据。

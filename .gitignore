@@ -8,7 +8,8 @@ venv/
 __pycache__/
 *.pyc
 .env
-.env.example
+!.env.example
+!**/.env.example
 uploads/
 test_uploads/
 .coverage
@@ -19,3 +20,9 @@ htmlcov/
 # 系统文件
 .DS_Store
 Thumbs.db
+
+# 编辑器与临时文件
+.idea/
+.vscode/
+*.log
+*.tmp
