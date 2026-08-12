@@ -6,6 +6,12 @@
 
 智档馆是一个面向文档处理流程的课程项目，提供 OCR、文本摘要、情感分析、关键词提取、翻译、批量会议文档处理、历史记录及用户管理功能。
 
+## 界面预览
+
+### 登录与注册
+
+![智档馆登录界面](docs/images/login.png)
+
 ## 技术栈
 
 - 前端：React 19、TypeScript 6、Ant Design 6、Vite 8、ECharts、Zustand
