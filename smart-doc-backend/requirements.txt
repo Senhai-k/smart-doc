@@ -19,7 +19,7 @@ crc32c==2.8
 cssselect==1.4.0
 cssutils==2.15.0
 cycler==0.12.1
-Cython==3.2.5
+Cython==3.2.9
 decorator==5.3.1
 distro==1.9.0
 encutils==1.0.0
